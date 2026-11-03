@@ -3,10 +3,10 @@
 "use strict";
 const KEY="mind-explorer-studio-v4";
 const pages=[["home","⌂","Overview"],["review","◎","Recall"],["diagrams","◇","Diagrams"],["simulator","◉","Simulator"],["research","☷","Research"],["compare","⇄","Comparisons"],["journal","✎","Journal"],["assess","✓","Assessments"],["analytics","▥","Analytics"],["meditate","✧","Meditation"],["settings","⚙","Settings"]];
-function fresh(){return {version:4,reviews:{},reviewLog:[],journal:[],sessions:[],assessments:[],scenarioLog:[],settings:{theme:"light",duration:5,bell:false}}}
+function fresh(){return {version:4,reviews:{},reviewLog:[],journal:[],sessions:[],assessments:[],scenarioLog:[],settings:{theme:"light",duration:5,pace:6,bell:false}}}
 function obj(x){return x!==null&&typeof x==="object"&&!Array.isArray(x)}
 function safe(d){let x=obj(d)?d:{},r=fresh();for(let k of ["reviewLog","journal","sessions","assessments","scenarioLog"]){if(Array.isArray(x[k]))r[k]=x[k].slice(-({"journal":500,"sessions":2000,"reviewLog":4000,"assessments":2000,"scenarioLog":300}[k])).filter(obj)}if(obj(x.reviews))r.reviews=x.reviews;
- if(obj(x.settings)){r.settings.theme=x.settings.theme==="dark"?"dark":"light";r.settings.duration=Math.max(1,Math.min(60,Number(x.settings.duration)||5));r.settings.bell=!!x.settings.bell}return r}
+ if(obj(x.settings)){r.settings.theme=x.settings.theme==="dark"?"dark":"light";r.settings.duration=Math.max(1,Math.min(60,Number(x.settings.duration)||5));r.settings.pace=Math.max(4,Math.min(7,Math.round((Number(x.settings.pace)||6)*2)/2));r.settings.bell=!!x.settings.bell}return r}
 const S={
  data:window.MindStudioContent,db:fresh(),modules:{},pages:pages,context:null,initialized:false,
  ui:{page:"home",notice:"",reviewId:null,reviewIndex:0,reviewChoice:null,reviewConfidence:3,reviewDone:false,diagram:"origin",diagramIndex:0,scenario:"criticism",scenarioStep:0,scenarioChoices:[],simFactors:[65,40,70,35],researchTab:"terms",researchSearch:"",comparison:"act",journalSearch:"",editJournal:null,assessment:"matching",match:{},matchDone:false,sort:[0,1,2,3],sortDone:false,explanation:"",explanationShown:false,practice:"breath",medRunning:false,medPaused:false,medRemaining:0,medEnd:0},
