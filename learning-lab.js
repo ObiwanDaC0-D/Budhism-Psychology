@@ -87,7 +87,7 @@ function assessment(questions){
   return '<button type="button" class="lab-choice '+className+'" data-lab-answer="'+i+'" '+(answered?'disabled':'')+'><span class="lab-choice-letter">'+String.fromCharCode(65+i)+'</span>'+e(option)+'</button>'
  }).join("")+'</div>'+(answered?'<div class="lab-feedback '+(chosen===item[2]?'right':'wrong')+'" role="status" tabindex="-1"><strong>'+(chosen===item[2]?'That is correct.':'Not quite.')+'</strong><p>'+e(item[3])+'</p><p class="lab-small">Correct answer: '+e(item[1][item[2]])+'</p></div><button type="button" class="btn" data-lab-advance>'+(quiz.pos===questions.length-1?'See my result →':'Next question →')+'</button>':'<p class="lab-small">Choose one answer. You will receive feedback immediately.</p>')+'</div>'
 }
-function pathView(){return '<div class="lab-intro"><h2>Choose a pathway</h2><p class="muted">Follow a curriculum or move freely among the lessons. Correct knowledge checks record mastery on this device.</p></div>'+pathCards()+lessonContent()+'<div class="lab-bottom-note">Progress is saved only in this browser (when storage is permitted). This is an educational self-check, not a measure of spiritual attainment.</div>'}
+function pathView(){return '<div class="lab-intro"><h2>Choose a pathway</h2><p class="muted">Follow a curriculum or move freely among the lessons. Correct knowledge checks record mastery on this device.</p></div>'+pathCards()+lessonContent()+'<div class="lab-bottom-note">Progress is saved only in this browser (when storage is permitted). This is an educational self-check, not a measure of spiritual attainment. <button type="button" class="lab-reset" data-lab-reset>Reset Learning Lab progress</button></div>'}
 function networkSvg(){
  var focus=mapFocus,neighbors=new Set([focus]);
  DATA.edges.forEach(function(edge){if(edge[0]===focus)neighbors.add(edge[1]);if(edge[1]===focus)neighbors.add(edge[0])});
@@ -142,6 +142,7 @@ function attach(){
  bindAll("[data-lab-node]",function(){mapFocus=this.dataset.labNode;draw()});
  document.querySelectorAll("[data-lab-node]").forEach(function(node){node.addEventListener("keydown",function(ev){if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();mapFocus=this.dataset.labNode;draw();var selected=document.querySelector('[data-lab-node="'+mapFocus+'"]');if(selected)selected.focus()}})});
  bindAll("[data-lab-chain]",function(){chainIndex=Number(this.dataset.labChain);draw()});
+ bindAll("[data-lab-reset]",function(){if(window.confirm("Reset all Learning Lab quiz scores and mastery on this device? Your Wisdom Library bookmarks and private reflections will remain unchanged.")){progress={passed:{},best:{}};quiz=null;activeLesson=track().ids[0];persist();draw()}});
  var domain=document.getElementById("labDomain");if(domain)domain.addEventListener("change",function(){mapFilter=this.value;draw()});
 }
 function render(c){
