@@ -16,7 +16,7 @@ function readFile(s,el){let file=el.files&&el.files[0];if(!file)return;if(file.s
  if(legacy["mind-explorer-learning-v1"]){let v=JSON.parse(legacy["mind-explorer-learning-v1"]);if(!valid(v))throw Error("Invalid Learning Lab state")}
  if(!window.confirm("Replace Studio 4.0 data and any included older Mind Explorer progress with this backup? This cannot be undone without an earlier backup."))return;
  let fails=[];for(let k of LEGACY){if(Object.prototype.hasOwnProperty.call(legacy,k)&&!s.context.store.set(k,legacy[k]))fails.push(k)}
- s.db={version:4,reviews:r.reviews,reviewLog:r.reviewLog,journal:r.journal,sessions:r.sessions,assessments:r.assessments,scenarioLog:Array.isArray(r.scenarioLog)?r.scenarioLog.slice(-300):[],settings:{theme:r.settings&&r.settings.theme==="dark"?"dark":"light",duration:Math.max(1,Math.min(60,Number(r.settings&&r.settings.duration)||5)),bell:!!(r.settings&&r.settings.bell)}};
+ s.db={version:4,reviews:r.reviews,reviewLog:r.reviewLog,journal:r.journal,sessions:r.sessions,assessments:r.assessments,scenarioLog:Array.isArray(r.scenarioLog)?r.scenarioLog.slice(-300):[],settings:{theme:r.settings&&r.settings.theme==="dark"?"dark":"light",duration:Math.max(1,Math.min(60,Number(r.settings&&r.settings.duration)||5)),pace:Math.max(4,Math.min(7,Number(r.settings&&r.settings.pace)||6)),bell:!!(r.settings&&r.settings.bell)}};
  if(!s.save())fails.push("Studio records");s.theme();s.ui.notice=fails.length?"Some records could not be imported: "+fails.join(", "):"Backup imported. Reload to refresh Learning Lab 3.0 progress if it is open.";s.draw();
  }catch(error){s.ui.notice="Import failed: "+error.message;s.draw()}};reader.onerror=()=>{s.ui.notice="Cannot read the selected backup.";s.draw()};reader.readAsText(file)}
 S.modules.settings={
@@ -33,7 +33,7 @@ S.modules.settings={
  if(a==="export"){s.download("mind-explorer-backup-"+s.dateKey(Date.now())+".json",JSON.stringify(backup(s),null,2),"application/json")}
  if(a==="import"){let f=document.getElementById("v4-import-file");if(f)f.click()}
  if(a==="copy"){let path=location.origin+location.pathname+"#studio/"+s.ui.page;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(path).then(()=>{s.ui.notice="Section link copied.";s.draw()}).catch(()=>{s.ui.notice="Link: "+path;s.draw()})}else{s.ui.notice="Link: "+path;s.draw()}}
- if(a==="clear"&&window.confirm("Delete all Studio 4.0 data on this device? Older Mind Explorer bookmarks and Learning Lab progress will remain.")){s.db={version:4,reviews:{},reviewLog:[],journal:[],sessions:[],assessments:[],scenarioLog:[],settings:{theme:"light",duration:5,bell:false}};s.theme();s.save();s.ui.notice="Studio 4.0 records cleared.";s.draw()}
+ if(a==="clear"&&window.confirm("Delete all Studio 4.0 data on this device? Older Mind Explorer bookmarks and Learning Lab progress will remain.")){s.db={version:4,reviews:{},reviewLog:[],journal:[],sessions:[],assessments:[],scenarioLog:[],settings:{theme:"light",duration:5,pace:6,bell:false}};s.theme();s.save();s.ui.notice="Studio 4.0 records cleared.";s.draw()}
  },
  afterRender(s){let f=document.getElementById("v4-import-file");if(f)f.onchange=e=>readFile(s,e.target)}
 };
