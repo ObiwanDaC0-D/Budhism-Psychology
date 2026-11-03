@@ -156,5 +156,6 @@ function validate(){
  DATA.edges.forEach(function(edge){if(!unique.has(edge[0])||!unique.has(edge[1]))errors.push("unknown relation")});
  return {ok:errors.length===0,errors:errors,topics:ids.length,questions:ids.reduce(function(s,id){return s+(DATA.questions[id]||[]).length},0)};
 }
-return {render:render,validate:validate};
+function selectConcept(id){var t=DATA.tracks.find(function(x){return x.ids.includes(id)});if(!t)return;trackId=t.id;activeLesson=id;quiz=null;view="paths";if(ctx)draw()}
+return {render:render,validate:validate,selectConcept:selectConcept};
 })();
