@@ -1,7 +1,7 @@
 /* Mind Explorer v4 offline support. Cache only this app's own static assets. */
-const CACHE="mind-explorer-v4-2026-11-02";
+const CACHE="mind-explorer-v4-2026-11-02-b";
 const PREFIX="mind-explorer-";
-const FILES=["./","./index.html","./wisdom-details.js","./learning-data.js","./learning-lab.js","./studio-content.js","./studio-core.js","./studio-learn.js","./studio-explore.js","./studio-reflect.js","./studio-settings.js","./studio.css","./manifest.webmanifest","./icon.svg"];
+const FILES=["./","./index.html","./wisdom-details.js","./learning-data.js","./learning-lab.js","./studio-content.js","./studio-core.js","./studio-learn.js","./studio-explore.js","./studio-reflect.js","./studio-settings.js","./studio.css","./manifest.webmanifest","./icon.svg","./icon-192.png","./icon-512.png"];
 self.addEventListener("install",event=>{event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(FILES)).then(()=>self.skipWaiting()))});
 self.addEventListener("activate",event=>{event.waitUntil(caches.keys().then(keys=>Promise.all(keys.filter(k=>k.startsWith(PREFIX)&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim()))});
 self.addEventListener("fetch",event=>{
